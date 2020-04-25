@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import qiskit as qk
 
 # Local Imports
-from quantum_pass_crack.oracles.sha_256 import SHA256Oracle
+from quantum_pass_crack.oracles import SHA256Oracle
 
 
 def main():
