@@ -1,3 +1,3 @@
-import qiskit as qk
 import matplotlib.pyplot as plt
+import qiskit as qk
 
