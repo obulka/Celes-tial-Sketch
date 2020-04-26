@@ -55,6 +55,8 @@ class StarMap:
                 self._stellar_radii,
             )
 
+        distorted = np.empty_like(texture)
+
         cv2.imwrite(path, texture)
 
     @property
@@ -94,6 +96,7 @@ class StarMap:
         """
         """
         delta_lambda = position_1[0] - position_0[0]
+        delta_lambda = (delta_lambda + np.pi) % 2 * np.pi - np.pi
 
         return np.arccos(
             np.sin(position_0[1])
