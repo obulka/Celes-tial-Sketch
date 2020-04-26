@@ -13,12 +13,12 @@ def main():
     """
     """
     base_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)))
-    app_path = os.path.join(base_dir, "Citrus.exe")
+    app_path = os.path.join(base_dir, "app/Citrus.exe")
     server_path = os.path.join(base_dir, "server.py")
 
     try:
-        os.system("python3 {}".format(server_path))
-        os.system(app_path)
+        os.system(f"{app_path} & python3 {server_path}")
+
         while True:
             time.sleep(3)
 
