@@ -51,7 +51,7 @@ def match(starmap, verts, edges):
 
             c, s = np.cos(differential_angle), np.sin(differential_angle)
             R = np.array(((c, -s), (s, c)))
-            #I think thisneeds to loop over each and then do matrix math
+
             rotated_verts = np.array([np.matmul(R, coord) for coord in scaled_relative_array])
             projected_verts = rotated_verts + np.array(pos)
 
