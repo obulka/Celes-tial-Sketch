@@ -42,6 +42,7 @@ def create_star_map(request_data):
         star_map = StarMap.from_database(data)
     else:
         star_map = StarMap(num_stars)
+
     star_map.add_edges(drawing_edges_to_star_edges(edges, match(star_map, vertices, edges)))
     star_map.write_texture(resolution, path)
 
