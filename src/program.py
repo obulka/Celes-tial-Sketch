@@ -22,6 +22,7 @@ def main():
     #     "edges": "[[0, 1], [1, 2], [2, 3], [3, 4], [4, 0]]",
     #     "vertices": "[[490, 437], [336, 134], [670, 270], [297, 294], [613, 116]]",
     # })
+    # print()
 
     app_path = os.path.join(base_dir, "app/Citrus.exe")
     server_path = os.path.join(base_dir, "server.py")
