@@ -56,10 +56,19 @@ class StarMap:
         image_positions = image_positions.astype(int)
 
         for position in image_positions:
-            cv2.circle(
+            cv2.ellipse(
                 texture,
                 tuple(position),
-                self._stellar_radii,
+                (
+                    int(
+                        self._stellar_radii
+                        * (2 * np.abs(position[1] / resolution[0] - 0.5) + 1)**2.25 # hacks for the hackathon
+                    ),
+                    self._stellar_radii,
+                ),
+                0,
+                0,
+                360,
                 self._star_colour,
                 -1,
             )
