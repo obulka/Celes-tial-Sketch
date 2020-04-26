@@ -27,8 +27,11 @@ def match(starmap, verts, edges):
 
     #The relative positions of each
     relative_array = np.array(verts) - np.array(fixed_vert)
+    print(relative_array)
 
+    #Want to minimize the weighted value of "badness" of fit
     lowest_weight = np.Inf
+    #The ordered list of star indicies that best match to the verticies
     best_match = []
 
     for first_star, pos in enumerate(starmap.angular_positions):
@@ -48,7 +51,7 @@ def match(starmap, verts, edges):
             star_angle = starmap.get_angle_between_stars(first_star, second_star)
 
             differential_angle = drawing_angle - star_angle
-            print(differential_angle)
+            #print(differential_angle)
             c, s = np.cos(differential_angle), np.sin(differential_angle)
             R = np.array(((c, -s), (s, c)))
 
