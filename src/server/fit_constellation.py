@@ -63,7 +63,7 @@ def match(starmap, verts, edges):
             #print(rotated_verts)
             projected_verts = rotated_verts + np.array(pos)
 
-            projected_verts = projected_verts + pos
+            #projected_verts = projected_verts + pos
             print(projected_verts)
             weight = 0
             match = list()
