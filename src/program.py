@@ -20,8 +20,8 @@ def main():
         "numStars": 100,
         "path": os.path.join(base_dir, "texture.png"),
         "resolution": (500, 1000),
-        "edges": [(0,1),(1,2),(2,0)],
-        "vertices": [(1,2),(4,5),(7,18)],
+        "edges": [(0,1),(1,2),(2,3),(3,0)],
+        "vertices": [(1,1),(2,1),(2,2),(1,2)],
     })
 
 

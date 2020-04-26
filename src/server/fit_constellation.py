@@ -48,19 +48,27 @@ def match(starmap, verts, edges):
             star_angle = starmap.get_angle_between_stars(first_star, second_star)
 
             differential_angle = drawing_angle - star_angle
-
+            print(differential_angle)
             c, s = np.cos(differential_angle), np.sin(differential_angle)
             R = np.array(((c, -s), (s, c)))
-            #I think thisneeds to loop over each and then do matrix math
+
             rotated_verts = np.array([np.matmul(R, coord) for coord in scaled_relative_array])
             projected_verts = rotated_verts + np.array(pos)
 
             weight = 0
             match = list()
             for vert_index, vert in enumerate(projected_verts):
-                star_index, distance_weight = starmap.get_distance_to_nearest_star(vert)
-                weight += distance_weight / normalizing_distance
-                match.append(star_index)
+                #Two stars should align exactly with the longest edge
+                if vert_index == edges[longest_edge][0]:
+                    match.append(first_star)
+                elif vert_index == edges[longest_edge][1]:
+                        match.append(second_star)
+                #The remaining stars should be fitted as well as possible
+                else:
+                    star_index, distance_weight = starmap.get_distance_to_nearest_star(vert)
+                    #TODO figure out how to weight this
+                    weight += distance_weight
+                    match.append(star_index)
 
             if weight < lowest_weight:
                 lowest_weight = weight
