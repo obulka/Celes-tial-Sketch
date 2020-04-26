@@ -45,10 +45,21 @@ class StarMap:
         """"""
         return self._angular_positions
 
-    def get_stars_in_radius(self, star_index, radius=0.5):
+    def get_stars_within_angle(self, star_index, angle=0.005):
         """
         """
-        pass
+        indices = []
+        for index_0, position_0 in enumerate(self._angular_positions):
+            for index_1, position_1 in enumerate(self._angular_positions[index_0 + 1:]):
+                angular_distance = np.arccos(np.dot(position_0, position_1))
+                if angular_distance < angle:
+                    indices.append((index_0, index_1))
+
+        return indices
+
+    def get_angle_between_stars(self, index_0, index_1):
+        difference = self._angular_positions[index_1] - self._angular_positions[index_0]
+        return np.arctan2(difference[1], difference[0])
 
     def get_distance_between_stars(self, star_index_0, star_index_1):
         """
@@ -58,13 +69,13 @@ class StarMap:
 
         return np.arccos(np.dot(position_0, position_1))
 
-
     def get_distance_to_nearest_star(self, angular_position):
         """
         """
-        index = 0
-        distance = 0
-        return index, distance
+        distances = [
+            np.arccos(np.dot(position, angular_position)) for position in self._angular_positions
+        ]
+        return np.argmin(distances), np.min(distances)
 
 
 def create_star_map(request_data):
