@@ -1,12 +1,12 @@
 # Standard Imports
 import os
+import time
 
 # 3rd Party Imports
 import matplotlib.pyplot as plt
 
 # Local Imports
-from server.webservices import create_star_map
-from server.webservices import StarMap
+from citrus.webservices import create_star_map, StarMap
 
 
 def main():
@@ -14,7 +14,7 @@ def main():
     """
     base_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)))
     app_path = os.path.join(base_dir, "Citrus.exe")
-    server_path = os.path.join(base_dir, "server", "server.py")
+    server_path = os.path.join(base_dir, "server.py")
 
     try:
         os.system("python3 {}".format(server_path))

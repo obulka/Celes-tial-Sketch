@@ -1,4 +1,4 @@
-import webservices
+from citrus import webservices
 
 from flask import Flask, json, request
 
