@@ -27,7 +27,6 @@ def match(starmap, verts, edges):
 
     #The relative positions of each
     relative_array = np.array(verts) - np.array(fixed_vert)
-    print(relative_array)
 
     #Want to minimize the weighted value of "badness" of fit
     lowest_weight = np.Inf
@@ -39,15 +38,16 @@ def match(starmap, verts, edges):
 
         for second_star in nearby_stars:
             #The distance to which we will normalize the longest edge
-            normalizing_distance = abs(starmap.get_distance_between_stars(first_star, second_star))
+            normalizing_distance = starmap.get_distance_between_stars(first_star, second_star)
 
             longest_edge_length = get_edge_length(relative_array, edges[longest_edge])
             scaled_relative_array = relative_array * normalizing_distance / longest_edge_length
-
+            #print(scaled_relative_array) (maybe make this signed somehow?)
             drawing_angle = np.arctan2(
                 scaled_relative_array[edges[longest_edge][1]][1],
                 scaled_relative_array[edges[longest_edge][1]][0],
             )
+            #print(drawing_angle)
             star_angle = starmap.get_angle_between_stars(first_star, second_star)
 
             differential_angle = drawing_angle - star_angle
@@ -56,6 +56,7 @@ def match(starmap, verts, edges):
             R = np.array(((c, -s), (s, c)))
 
             rotated_verts = np.array([np.matmul(R, coord) for coord in scaled_relative_array])
+            #print(rotated_verts)
             projected_verts = rotated_verts + np.array(pos)
 
             weight = 0
@@ -76,7 +77,6 @@ def match(starmap, verts, edges):
             if weight < lowest_weight:
                 lowest_weight = weight
                 best_match = match
-
     return best_match
 
 
