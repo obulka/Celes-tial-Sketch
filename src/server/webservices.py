@@ -69,7 +69,7 @@ class StarMap:
     def add_edges(self, new_edges):
         self._edges.extend(new_edges)
 
-    def get_stars_within_angle(self, star_index, angle=0.05):
+    def get_stars_within_angle(self, star_index, angle=0.5):
         """
         """
         indices = []

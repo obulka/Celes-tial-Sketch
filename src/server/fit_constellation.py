@@ -59,11 +59,17 @@ def match(starmap, verts, edges):
             match = list()
             for vert_index, vert in enumerate(projected_verts):
                 star_index, distance_weight = starmap.get_distance_to_nearest_star(vert)
-                weight += distance_weight
-                match.append((vert_index, star_index))
+                weight += distance_weight / normalizing_distance
+                match.append(star_index)
 
             if weight < lowest_weight:
                 lowest_weight = weight
                 best_match = match
 
     return best_match
+
+    def drawing_edges_to_star_edges(edges,star_match):
+        star_edges = list()
+        for edge in edges:
+            star_edges.append((star_match[edge[0]],star_match[edge[1]]))
+    return star_edges
