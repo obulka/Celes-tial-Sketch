@@ -56,16 +56,10 @@ class StarMap:
         image_positions = image_positions.astype(int)
 
         for position in image_positions:
-            cv2.ellipse(
+            cv2.circle(
                 texture,
                 tuple(position),
-                (
-                    self._stellar_radii,
-                    self._stellar_radii,
-                ),
-                0,
-                0,
-                360,
+                self._stellar_radii,
                 self._star_colour,
                 -1,
             )
@@ -188,7 +182,7 @@ def create_star_map(request_data):
         num_stars = int(num_stars_str)
     except ValueError:
         return json.dumps({"success": False, "failureInfo": "Invalid resolution/num_stars format"}), 400
-    
+
     try:
         edges = json.loads(edges_str)
         vertices = json.loads(vertices_str)
@@ -202,8 +196,8 @@ def create_star_map(request_data):
         os.pardir,
         "BrowseTargets.25333.1587902116",
     ))
-    star_map = StarMap.from_database(data)
-    star_map.add_edges(drawing_edges_to_star_edges(edges, match(star_map, vertices, edges)))
+    star_map = StarMap(num_stars) #.from_database(data)
+    # star_map.add_edges(drawing_edges_to_star_edges(edges, match(star_map, vertices, edges)))
     star_map.write_texture(resolution, path)
 
     return json.dumps({"success": True}), 201
