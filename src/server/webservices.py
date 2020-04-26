@@ -100,22 +100,6 @@ class StarMap:
     def get_angle_between_stars(self, index_0, index_1):
         difference = self._angular_positions[index_1] - self._angular_positions[index_0]
         return np.arctan2(difference[1], difference[0])
-    '''
-    @staticmethod
-    def _distance_between_angular_positions(position_0, position_1):
-        """
-        """
-        delta_lambda = position_1[0] - position_0[0]
-        delta_lambda = (delta_lambda + np.pi) % 2 * np.pi - np.pi
-
-        return np.arccos(
-            np.sin(position_0[1])
-            * np.sin(position_1[1])
-            + np.cos(position_0[1])
-            * np.cos(position_1[1])
-            * np.cos(delta_lambda)
-        )
-    '''
 
     @staticmethod
     def _distance_between_angular_positions(position_0, position_1):
