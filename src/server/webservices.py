@@ -22,8 +22,9 @@ class StarMap:
         self._stellar_radii = stellar_radii
         self._edges = []
 
-        self._angular_positions = np.random.rand(self._num_stars, 2) * np.pi
-        self._angular_positions[:, 0] *= 2
+        self._angular_positions = np.random.rand(self._num_stars, 2)
+        self._angular_positions[:, 0] *= 2 * np.pi
+        self._angular_positions[:, 1] = np.arccos(2 * self._angular_positions[:, 1] - 1)
 
     def write_texture(self, resolution, path):
         texture = np.empty((resolution[0], resolution[1], 3))
@@ -132,10 +133,10 @@ def create_star_map(request_data):
 
     star_map = StarMap(num_stars)
 
-    if edges and vertices:
-        edges = match(star_map, vertices, edges)
-        star_map.add_edges(edges)
-        print(edges)
+    # if edges and vertices:
+        # edges = match(star_map, vertices, edges)
+        # star_map.add_edges(edges)
+        # print(edges)
 
     star_map.write_texture(resolution, path)
 
