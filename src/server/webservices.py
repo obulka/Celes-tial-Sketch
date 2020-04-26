@@ -87,7 +87,7 @@ class StarMap:
     def add_edges(self, new_edges):
         self._edges.extend(new_edges)
 
-    def get_stars_within_angle(self, star_index, min_angle=0.01, max_angle=0.05):
+    def get_stars_within_angle(self, star_index, min_angle=0.005, max_angle=1.5):
         """
         """
         indices = []
@@ -115,7 +115,7 @@ class StarMap:
         delta_theta = position_1[0] - position_0[0]
         delta_phi = position_1[1] - position_0[1]
 
-        return np.sqrt(delta_theta**2 + delta_phi**2)
+        return np.sqrt(delta_theta ** 2 + delta_phi ** 2)
 
     def get_distance_between_stars(self, star_index_0, star_index_1):
         """
