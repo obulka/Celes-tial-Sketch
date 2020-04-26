@@ -1,6 +1,8 @@
 # Celes-tial-Sketch
 
-Celes-tial-Sketch is an application that takes user sketches and fits them optimally onto a projection of the night sky. Reshape the constellations as we know them, doodle all over the night sky or simply relax and listen to some sonorous music while staring into the stars. 
+Celes-tial-Sketch is an application that takes user sketches and fits them optimally onto a projection of the night sky. Reshape the constellations as we know them, doodle all over the night sky or simply relax and listen to some sonorous music while staring into the stars. Please enjoy our video!
+
+https://youtu.be/kdUqqhD_k-4
 
 ## Installation
 
