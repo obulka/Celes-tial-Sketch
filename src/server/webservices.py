@@ -22,10 +22,7 @@ class StarMap:
         self._angular_positions = np.random.rand(self._num_stars, 2) * np.pi
         self._angular_positions[:, 0] *= 2
 
-    def write_texture(
-            self,
-            resolution,
-            path):
+    def write_texture(self, resolution, path):
         texture = np.empty((resolution[0], resolution[1], 3))
         texture[..., :] = self._background_colour
 
@@ -53,10 +50,14 @@ class StarMap:
         """
         pass
 
-    def get_distance_between_stars(star_index_0, star_index_1):
+    def get_distance_between_stars(self, star_index_0, star_index_1):
         """
         """
-        pass
+        position_0 = self._angular_positions[star_index_0]
+        position_1 = self._angular_positions[star_index_1]
+
+        return np.arccos(np.dot(position_0, position_1))
+
 
     def get_distance_to_nearest_star(self, angular_position):
         """
