@@ -1,6 +1,6 @@
 import math
 import numpy as np
-import matplotlib.pyplot as plt
+import time
 
 def find_longest_edge(verts,edges):
     """ Returns the longest """
@@ -22,7 +22,15 @@ def get_edge_length(verts, edge):
     return edge_length
 
 
-def match(starmap, verts, edges, max_matches=7):
+def match(
+        proc_num,
+        return_dict,
+        angular_positions,
+        starmap,
+        verts,
+        edges,
+        max_updates=10,
+        time_out=30):
     longest_edge = find_longest_edge(verts,edges)
     fixed_vert = verts[edges[longest_edge][0]]
 
@@ -35,7 +43,8 @@ def match(starmap, verts, edges, max_matches=7):
     best_match = []
     matches = 0
 
-    for first_star, pos in enumerate(starmap.angular_positions):
+    start = time.time()
+    for first_star, pos in enumerate(angular_positions):
         nearby_stars = starmap.get_stars_within_angle(first_star)
         #print(nearby_stars)
 
@@ -81,13 +90,14 @@ def match(starmap, verts, edges, max_matches=7):
 
             if weight < lowest_weight and len(np.unique(match)) == len(match):
                 lowest_weight = weight
-                best_match = match
+                return_dict[proc_num] = {"match": match, "weight": lowest_weight}
                 matches += 1
-                print("Updated best match")
-                if matches >= max_matches:
-                    return best_match
-    return best_match
-
+                print("Updated from process {} {} times".format(proc_num, matches))
+                if matches >= max_updates:
+                    return
+            
+            if time.time() - start > time_out:
+                return
 
 def get_angle_between_edges(verts_array,edge_1,edge_2):
     vector_1 = vert_array[edge_1[1]] - vert_array[edge_1[0]]
