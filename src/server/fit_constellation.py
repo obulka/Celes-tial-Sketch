@@ -29,7 +29,7 @@ def match(starmap, verts, edges):
     relative_array = np.array(verts) - np.array(verts[fixed_vert])
 
     lowest_weight = np.Inf
-    best_match = list()
+    best_match = []
 
     for first_star, pos in enumerate(starmap.angular_positions):
         nearby_stars = starmap.get_stars_within_angle(first_star)
@@ -37,7 +37,7 @@ def match(starmap, verts, edges):
         for second_star in nearby_stars:
             #The distance to which we will normalize the longest edge
             normalizing_distance = abs(starmap.get_distance_between_stars(first_star, second_star))
-            longest_edge_length = get_edge_length(relative_array,longest_edge)
+            longest_edge_length = get_edge_length(relative_array, longest_edge)
             scaled_relative_array = relative_array * normalizing_distance / longest_edge_length
 
             drawing_angle = np.arctan2(
@@ -46,7 +46,7 @@ def match(starmap, verts, edges):
             )
             star_angle = starmap.get_angle_between_starts(first_star, second_star)
 
-            differential_angle = drawing_angle - star_angle;
+            differential_angle = drawing_angle - star_angle
 
             c, s = np.cos(differential_angle), np.sin(differential_angle)
             R = np.array(((c, -s), (s, c)))

@@ -24,14 +24,15 @@ class StarMap:
         self._angular_positions[:, 0] *= 2
 
     def write_texture(self, resolution, path):
-        texture = np.empty((resolution[0], resolution[1], 3)).astype(np.uint8)
+        texture = np.empty((resolution[0], resolution[1], 3))
         texture[..., :] = self._background_colour
 
         image_positions = self._angular_positions / np.pi
         image_positions[:, 0] *= resolution[1] / 2 # x
         image_positions[:, 1] *= resolution[0] # y
+        image_positions = image_positions.astype(int)
 
-        for position in image_positions.astype(int):
+        for position in image_positions:
             cv2.circle(
                 texture,
                 tuple(position),
@@ -116,7 +117,7 @@ def create_star_map(request_data):
 
     star_map = StarMap(num_stars)
 
-    # star_map.add_edges([[0, 1], [1, 2], [2, 3], [3, 0]])
+    star_map.add_edges([(0, 1), (1, 2), (2, 3), (3, 0)])
 
     star_map.write_texture(resolution, path)
 
