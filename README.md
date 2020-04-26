@@ -10,7 +10,7 @@ Clone the repository and run the file src/program.py through a python shell. May
 
 ## Usage
 
-After running the application a scrollable spherical star map will be projected around the user. Clicking the "Draw" button will bring up a canvas where the user can click to make a simple sketch. Clicking "Find Constellation" will send the sketch to the back end where an optimal match will be found with the existing star map. This will be projected for the user's viewing pleasure. Relax and enjoy the music.
+After running the application a scrollable spherical star map will be projected around the user. Clicking the "Draw" button will bring up a canvas where the user can click to make a simple sketch. Clicking "Find Constellation" will send the sketch to the back end where an optimal match will be found with the existing star map. This will be projected for the user's viewing pleasure. Relax and enjoy the music. Press "ESC" to exit application.
 
 ## Sources
 
