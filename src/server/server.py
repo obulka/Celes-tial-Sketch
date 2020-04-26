@@ -35,23 +35,19 @@ def _request_form(request):
     return loaded_data
 
 
-@api.route('/star_map/new', methods=['GET'])
-def get_star_map():
+@api.route('/star_map/new', methods=['POST'])
+def update_star_map():
     request_data = _request_form(request)
     if not request_data:
         return {'success': False, 'failureInfo': 'No request data'}, 400
 
-    resp = webservices.create_star_map(request_data)
+    resp = webservices.update_star_map(request_data)
     return resp
-
-
 
 
 @api.route('/healthcheck', methods=['GET'])
 def ws_health_check():
     return json.dumps({'status': 200})
-
-
 
 @api.route('/')
 def hello_world():
