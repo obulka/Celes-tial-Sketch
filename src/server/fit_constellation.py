@@ -64,7 +64,7 @@ def match(starmap, verts, edges):
             projected_verts = rotated_verts + np.array(pos)
 
             weight = 0
-            match = list()
+            match = []
             for vert_index, vert in enumerate(projected_verts):
                 #Two stars should align exactly with the longest edge
                 if vert_index == edges[longest_edge][0]:
@@ -137,12 +137,10 @@ def match_1(star_map, vertices, edges):
                     rotation_matrix = np.array([[cos_, -sin_], [sin_, cos_]])
 
                     rotated_verts = np.array([
-                        np.matmul(R, vertex) for vertex in scaled_vertices
+                        np.matmul(rotation_matrix, vertex) for vertex in scaled_vertices
                     ])
 
                     projected_constellation = rotated_verts + star_position
-
-
 
 
 

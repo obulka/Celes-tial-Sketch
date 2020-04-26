@@ -12,21 +12,37 @@ from .fit_constellation import match, drawing_edges_to_star_edges
 
 class StarMap:
 
+    @classmethod
+    def from_database(cls, angular_positions, **kwargs):
+        return StarMap(
+            len(angular_positions),
+            angular_positions=angular_positions,
+            **kwargs,
+        )
+
     def __init__(
             self,
             num_stars,
+            angular_positions=None,
             background_colour=[0, 0, 0],
             star_colour=[255, 255, 255],
+            constellation_colour=[243, 242, 165],
             stellar_radii=1):
         self._num_stars = num_stars
         self._background_colour = background_colour
         self._star_colour = star_colour
+        self._constellation_colour = constellation_colour
         self._stellar_radii = stellar_radii
         self._edges = []
 
-        self._angular_positions = np.random.rand(self._num_stars, 2)
-        self._angular_positions[:, 0] *= 2 * np.pi
-        self._angular_positions[:, 1] = np.arccos(2 * self._angular_positions[:, 1] - 1)
+        if angular_positions is None:
+            self._angular_positions = np.random.rand(self._num_stars, 2)
+            self._angular_positions[:, 0] *= 2 * np.pi
+            self._angular_positions[:, 1] = np.arccos(
+                2 * self._angular_positions[:, 1] - 1
+            )
+        else:
+            self._angular_positions = angular_positions
 
     def write_texture(self, resolution, path):
         texture = np.empty((resolution[0], resolution[1], 3))
@@ -59,10 +75,10 @@ class StarMap:
                 texture,
                 tuple(point_0),
                 tuple(point_1),
-                self._star_colour,
+                self._constellation_colour,
                 self._stellar_radii,
             )
-
+        texture = self.distort(texture, resolution[0], resolution[1])
         cv2.imwrite(path, texture)
         # map = Basemap(projection='cyl', lat_0=0, lon_0=0)
 
@@ -151,7 +167,6 @@ def create_star_map(request_data):
         star_map.add_edges(
             drawing_edges_to_star_edges(edges, match(star_map, vertices, edges))
         )
-
     star_map.write_texture(resolution, path)
 
     return json.dumps({"success": True})
