@@ -155,27 +155,6 @@ class StarMap:
 
 
 def create_star_map(request_data):
-    num_stars = request_data.get("numStars")
-    path = request_data.get("path")
-    resolution = request_data.get("resolution")
-    edges = request_data.get("edges")
-    vertices = request_data.get("vertices")
-
-    if not num_stars or not path or not resolution:
-        return json.dumps({"success": False, "failureInfo": "Request data missing"}), 400
-
-    star_map = StarMap(num_stars)
-
-    if edges and vertices:
-        star_map.add_edges(
-            drawing_edges_to_star_edges(edges, match(star_map, vertices, edges))
-        )
-    star_map.write_texture(resolution, path)
-
-    return json.dumps({"success": True})
-
-
-def create_star_map(request_data):
     num_stars_str = request_data.get("numStars")
     resolution_x_str = request_data.get("resolutionX")
     resolution_y_str = request_data.get("resolutionY")
@@ -206,7 +185,7 @@ def create_star_map(request_data):
         "BrowseTargets.25333.1587902116",
     ))
     star_map = StarMap(num_stars) #.from_database(data)
-    # star_map.add_edges(drawing_edges_to_star_edges(edges, match(star_map, vertices, edges)))
+    star_map.add_edges(drawing_edges_to_star_edges(edges, match(star_map, vertices, edges)))
     star_map.write_texture(resolution, path)
 
     return json.dumps({"success": True}), 201
