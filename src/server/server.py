@@ -41,8 +41,7 @@ def update_star_map():
     if not request_data:
         return {'success': False, 'failureInfo': 'No request data'}, 400
 
-    resp = webservices.update_star_map(request_data)
-    return resp
+    return webservices.update_star_map(request_data)
 
 
 @api.route('/healthcheck', methods=['GET'])
