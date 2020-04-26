@@ -54,7 +54,7 @@ def match(starmap, verts, edges):
             #print(drawing_angle)
             star_angle = starmap.get_angle_between_stars(first_star, second_star)
 
-            differential_angle =  star_angle-drawing_angle
+            differential_angle = star_angle - drawing_angle
             #print(differential_angle)
             c, s = np.cos(differential_angle), np.sin(differential_angle)
             R = np.array(((c, -s), (s, c)))

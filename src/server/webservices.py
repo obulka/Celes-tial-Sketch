@@ -90,7 +90,6 @@ class StarMap:
 
         # plt.show()
 
-
     @property
     def angular_positions(self):
         """"""
