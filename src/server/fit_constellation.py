@@ -42,8 +42,8 @@ def match(starmap, verts, edges):
             scaled_relative_array = relative_array * normalizing_distance / longest_edge_length
 
             drawing_angle = np.arctan2(
-                scaled_relative_array[edges[longest_edge][1]],
-                scaled_relative_array[edges[longest_edge][0]],
+                scaled_relative_array[edges[longest_edge][1]][1],
+                scaled_relative_array[edges[longest_edge][1]][0],
             )
             star_angle = starmap.get_angle_between_stars(first_star, second_star)
 
