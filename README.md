@@ -11,3 +11,17 @@ Clone the repository and run the file src/program.py through a python shell. May
 ## Usage
 
 After running the application a scrollable spherical star map will be projected around the user. Clicking the "Draw" button will bring up a canvas where the user can click to make a simple sketch. Clicking "Find Constellation" will send the sketch to the back end where an optimal match will be found with the existing star map. This will be projected for the user's viewing pleasure. Relax and enjoy the music.
+
+## Sources
+
+Open source music and sound effects from:
+
+https://freemusicarchive.org/music/Meydan/Ambient_1860/Away_1569
+
+and
+
+https://freesound.org/people/Anthousai/sounds/398496/
+
+Star data queried from NASA archives at:
+
+https://heasarc.gsfc.nasa.gov/W3Browse/w3blaunch.html
