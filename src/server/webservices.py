@@ -55,7 +55,17 @@ class StarMap:
                 self._stellar_radii,
             )
 
-        distorted = np.empty_like(texture)
+        # distorted = np.empty_like(texture)
+        # new_indices = np.round(resolution[1] * (
+        #     np.tan(np.linspace(0, 2 * np.pi, resolution[1]) / 2)**-1
+        #     + 1
+        # ) / 2).astype(int)
+        # print(new_indices)
+
+        # for row_index, row in enumerate(texture):
+        #     for column_index, pixel in enumerate(row):
+        #         new_index = new_indices[column_index]
+        #         distorted[row_index, new_index] = pixel
 
         cv2.imwrite(path, texture)
 
@@ -71,7 +81,7 @@ class StarMap:
     def add_edges(self, new_edges):
         self._edges.extend(new_edges)
 
-    def get_stars_within_angle(self, star_index, angle=0.05):
+    def get_stars_within_angle(self, star_index, min_angle=0.01, max_angle=0.05):
         """
         """
         indices = []
@@ -82,7 +92,7 @@ class StarMap:
                 position,
                 self._angular_positions[star_index],
             )
-            if angular_distance < angle:
+            if angular_distance > min_angle and angular_distance < max_angle:
                 indices.append(index)
 
         return indices
