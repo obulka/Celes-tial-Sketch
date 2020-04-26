@@ -5,7 +5,7 @@ from flask import Flask, request
 import numpy as np
 import cv2
 
-from .fit_constellation import match
+from .fit_constellation import match, drawing_edges_to_star_edges
 
 
 class StarMap:
@@ -133,10 +133,8 @@ def create_star_map(request_data):
 
     star_map = StarMap(num_stars)
 
-    # if edges and vertices:
-        # edges = match(star_map, vertices, edges)
-        # star_map.add_edges(edges)
-        # print(edges)
+    if edges and vertices:
+        star_map.add_edges(drawing_edges_to_star_edges(edges, match(star_map, vertices, edges)))
 
     star_map.write_texture(resolution, path)
 
