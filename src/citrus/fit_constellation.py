@@ -22,7 +22,7 @@ def get_edge_length(verts, edge):
     return edge_length
 
 
-def match(starmap, verts, edges):
+def match(starmap, verts, edges, max_matches=7):
     longest_edge = find_longest_edge(verts,edges)
     fixed_vert = verts[edges[longest_edge][0]]
 
@@ -33,6 +33,7 @@ def match(starmap, verts, edges):
     lowest_weight = np.Inf
     #The ordered list of star indicies that best match to the verticies
     best_match = []
+    matches = 0
 
     for first_star, pos in enumerate(starmap.angular_positions):
         nearby_stars = starmap.get_stars_within_angle(first_star)
@@ -78,11 +79,13 @@ def match(starmap, verts, edges):
                     weight += distance_weight
                     match.append(star_index)
 
-            if weight < lowest_weight and len(np.unique(match)) == len(match) :
+            if weight < lowest_weight and len(np.unique(match)) == len(match):
                 lowest_weight = weight
                 best_match = match
-                print(best_match)
-
+                matches += 1
+                if matches >= max_matches:
+                    return best_match
+                # print(best_match)
     return best_match
 
 

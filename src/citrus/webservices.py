@@ -1,5 +1,6 @@
 import base64
 import json
+import os
 
 from flask import Flask, request
 import numpy as np
@@ -8,6 +9,7 @@ import cv2
 # import matplotlib.pyplot as plt
 
 from .fit_constellation import match, drawing_edges_to_star_edges
+from .star_parser import parse_star_query
 
 
 class StarMap:
@@ -16,7 +18,7 @@ class StarMap:
     def from_database(cls, angular_positions, **kwargs):
         return StarMap(
             len(angular_positions),
-            angular_positions=angular_positions,
+            angular_positions=np.array(angular_positions),
             **kwargs,
         )
 
@@ -78,7 +80,6 @@ class StarMap:
                 self._constellation_colour,
                 self._stellar_radii,
             )
-        texture = self.distort(texture, resolution[0], resolution[1])
         cv2.imwrite(path, texture)
         # map = Basemap(projection='cyl', lat_0=0, lon_0=0)
 
@@ -178,7 +179,7 @@ def create_star_map(request_data):
     path = request_data.get("path")
     edges_str = request_data.get("edges")
     vertices_str = request_data.get("vertices")
-    
+
     if not num_stars_str or not resolution_x_str or not resolution_y_str or not path or not edges_str or not vertices_str:
         return json.dumps({"success": False, "failureInfo": "Request data missing"}), 400
 
@@ -194,7 +195,14 @@ def create_star_map(request_data):
     except json.JSONDecodeError:
         return json.dumps({"success": False, "failureInfo": "Invalid edges/vertices format"}), 400
 
-    star_map = StarMap(num_stars)
+    base_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)))
+    data = parse_star_query(os.path.join(
+        base_dir,
+        os.pardir,
+        os.pardir,
+        "BrowseTargets.25333.1587902116",
+    ))
+    star_map = StarMap.from_database(data)
     star_map.add_edges(drawing_edges_to_star_edges(edges, match(star_map, vertices, edges)))
     star_map.write_texture(resolution, path)
 
