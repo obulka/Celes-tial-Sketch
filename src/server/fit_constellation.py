@@ -68,8 +68,9 @@ def match(starmap, verts, edges):
 
     return best_match
 
-    def drawing_edges_to_star_edges(edges,star_match):
-        star_edges = list()
-        for edge in edges:
-            star_edges.append((star_match[edge[0]],star_match[edge[1]]))
+
+def drawing_edges_to_star_edges(edges, star_match):
+    star_edges = []
+    for edge in edges:
+        star_edges.append((star_match[edge[0]],star_match[edge[1]]))
     return star_edges
