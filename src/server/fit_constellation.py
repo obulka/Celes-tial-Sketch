@@ -1,11 +1,8 @@
 import math
 import numpy as np
 
-'''
-Returns the longest 
-
-'''
 def find_longest_edge(verts,edges):
+    """ Returns the longest """
     max_edge_length = 0
     longest_edge = 0
     for index,edge in enumerate(edges):
@@ -15,10 +12,8 @@ def find_longest_edge(verts,edges):
             longest_edge = index
     return longest_edge
 
-'''
-Returns the length of edge
-'''
 def get_edge_length(verts, edge):
+    """ Returns the length of edge """
     edge_length = np.sqrt(
         (verts[edge[0]][0] - verts[edge[1]][0])**2
         + (verts[edge[0]][1]-verts[edge[1]][1])**2
@@ -47,10 +42,10 @@ def match(starmap, verts, edges):
             scaled_relative_array = relative_array * normalizing_distance / longest_edge_length
 
             drawing_angle = np.arctan2(
-                scaled_relative_array[edges[longest_edge]][1],
-                scaled_relative_array[edges[longest_edge]][0],
+                scaled_relative_array[edges[longest_edge][1]],
+                scaled_relative_array[edges[longest_edge][0]],
             )
-            star_angle = starmap.get_angle_between_starts(first_star, second_star)
+            star_angle = starmap.get_angle_between_stars(first_star, second_star)
 
             differential_angle = drawing_angle - star_angle
 
