@@ -15,7 +15,9 @@ def find_longest_edge(verts,edges):
             longest_edge = index
     return longest_edge
 
-
+'''
+Returns the length of edge
+'''
 def get_edge_length(verts, edge):
     edge_length = np.sqrt(
         (verts[edge[0]][0] - verts[edge[1]][0])**2
@@ -40,7 +42,8 @@ def match(starmap, verts, edges):
         for second_star in nearby_stars:
             #The distance to which we will normalize the longest edge
             normalizing_distance = abs(starmap.get_distance_between_stars(first_star, second_star))
-            longest_edge_length = get_edge_length(relative_array, longest_edge)
+
+            longest_edge_length = get_edge_length(relative_array, edges[longest_edge])
             scaled_relative_array = relative_array * normalizing_distance / longest_edge_length
 
             drawing_angle = np.arctan2(

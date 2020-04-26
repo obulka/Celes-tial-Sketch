@@ -27,9 +27,9 @@ def main():
 
     star_map = StarMap(100)
     vertices = [(1,2),(4,5),(7,18)]
-    edges = [(0,1),(1,2),[2,0]]
+    edges = [(0,1),(1,2),(2,0)]
 
-    print(match(star_map, vertices, edges))
+    print(match(star_map,vertices,edges))
 
 if __name__ == "__main__":
     main()
