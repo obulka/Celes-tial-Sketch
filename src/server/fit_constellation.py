@@ -55,8 +55,6 @@ def match(starmap, verts, edges):
             rotated_verts = np.array([np.matmul(R, coord) for coord in scaled_relative_array])
             projected_verts = rotated_verts + np.array(pos)
 
-            print(projected_verts)
-
             weight = 0
             match = list()
             for vert_index, vert in enumerate(projected_verts):
@@ -74,5 +72,4 @@ def match(starmap, verts, edges):
         star_edges = list()
         for edge in edges:
             star_edges.append((star_match[edge[0]],star_match[edge[1]]))
-
     return star_edges
