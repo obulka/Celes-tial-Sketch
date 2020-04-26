@@ -46,6 +46,7 @@ def get_star_map():
 
 
 
+
 @api.route('/healthcheck', methods=['GET'])
 def ws_health_check():
     return json.dumps({'status': 200})

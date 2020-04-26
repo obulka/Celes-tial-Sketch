@@ -11,7 +11,7 @@ def generate_star_map(num_stars):
     return [(uniform(0, 360), uniform(0, 180)) for _ in range(num_stars)]
 
 
-def create_new_character(request_data):
+def create_star_map(request_data):
     num_stars = request_data.get('num_stars')
 
     if not num_stars:
