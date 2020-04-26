@@ -16,8 +16,11 @@ def find_longest_edge(verts,edges):
     return longest_edge
 
 
-def get_edge_length(verts,edge):
-    edge_length = np.sqrt((verts[edge[0]][0]-verts[edge[1]][0])**2+(verts[edge[0]][1]-verts[edge[1]][1])**2)
+def get_edge_length(verts, edge):
+    edge_length = np.sqrt(
+        (verts[edge[0]][0] - verts[edge[1]][0])**2
+        + (verts[edge[0]][1]-verts[edge[1]][1])**2
+    )
     return edge_length
 
 
@@ -36,19 +39,22 @@ def match(starmap,verts,edges):
 
         for second_star in nearby_stars:
             #The distance to which we will normalize the longest edge
-            normalizing_distance = abs(starmap.get_distance_between_stars(first_star,second_star))
+            normalizing_distance = abs(starmap.get_distance_between_stars(first_star, second_star))
             longest_edge_length = get_edge_length(relative_array,longest_edge)
-            scaled_relative_array = relative_array*normalizing_distance/longest_edge_length
+            scaled_relative_array = relative_array * normalizing_distance / longest_edge_length
 
-            drawing_angle = np.arctan2(scaled_relative_array[edges[longest_edge]][1],scaled_relative_array[edges[longest_edge]][0])
-            star_angle = starmap.get_angle_between_starts(first_star,second_star)
+            drawing_angle = np.arctan2(
+                scaled_relative_array[edges[longest_edge]][1],
+                scaled_relative_array[edges[longest_edge]][0],
+            )
+            star_angle = starmap.get_angle_between_starts(first_star, second_star)
 
             differential_angle = drawing_angle - star_angle;
 
             c, s = np.cos(differential_angle), np.sin(differential_angle)
-            R = np.array(((c,-s),(s,c)))
+            R = np.array(((c, -s), (s, c)))
             #I think thisneeds to loop over each and then do matrix math
-            rotated_verts = np.matmul(R,scaled_relative_array)
+            rotated_verts = np.matmul(R, scaled_relative_array)
             projected_verts = rotated_verts + np.array(pos)
 
             weight = 0
@@ -56,13 +62,10 @@ def match(starmap,verts,edges):
             for vert_index, vert in enumerate(projected_verts):
                 star_index, distance_weight = starmap.get_distance_to_nearest_star(vert)
                 weight += distance_weight
-                match.append((vert_index,star_index))
+                match.append((vert_index, star_index))
 
             if weight < lowest_weight:
                 lowest_weight = weight
                 best_match = match
 
     return best_match
-
-
-    return 0

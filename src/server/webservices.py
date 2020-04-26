@@ -18,12 +18,13 @@ class StarMap:
         self._background_colour = background_colour
         self._star_colour = star_colour
         self._stellar_radii = stellar_radii
+        self._edges = []
 
         self._angular_positions = np.random.rand(self._num_stars, 2) * np.pi
         self._angular_positions[:, 0] *= 2
 
     def write_texture(self, resolution, path):
-        texture = np.empty((resolution[0], resolution[1], 3))
+        texture = np.empty((resolution[0], resolution[1], 3)).astype(np.uint8)
         texture[..., :] = self._background_colour
 
         image_positions = self._angular_positions / np.pi
@@ -38,12 +39,31 @@ class StarMap:
                 self._star_colour,
                 -1,
             )
+
+        for edge in self._edges:
+            point_0 = image_positions[edge[0]]
+            point_1 = image_positions[edge[1]]
+            cv2.line(
+                texture,
+                tuple(point_0),
+                tuple(point_1),
+                self._star_colour,
+                self._stellar_radii,
+            )
+
         cv2.imwrite(path, texture)
 
     @property
     def angular_positions(self):
         """"""
         return self._angular_positions
+
+    @property
+    def edges(self):
+        return self._edges
+
+    def add_edges(self, new_edges):
+        self._edges.extend(new_edges)
 
     def get_stars_within_angle(self, star_index, angle=0.005):
         """
@@ -67,7 +87,15 @@ class StarMap:
         position_0 = self._angular_positions[star_index_0]
         position_1 = self._angular_positions[star_index_1]
 
-        return np.arccos(np.dot(position_0, position_1))
+        delta_lambda = position_1[0] - position_0[0]
+
+        return np.arccos(
+            np.sin(position_0[1])
+            * np.sin(position_1[1])
+            + np.cos(position_0[1])
+            * np.cos(position_1[1])
+            * np.cos(delta_lambda)
+        )
 
     def get_distance_to_nearest_star(self, angular_position):
         """
@@ -79,7 +107,7 @@ class StarMap:
 
 
 def create_star_map(request_data):
-    num_stars = request_data.get("num_stars")
+    num_stars = request_data.get("numStars")
     path = request_data.get("path")
     resolution = request_data.get("resolution")
 
@@ -87,6 +115,8 @@ def create_star_map(request_data):
         return json.dumps({"success": False, "failureInfo": "Request data missing"}), 400
 
     star_map = StarMap(num_stars)
+
+    # star_map.add_edges([[0, 1], [1, 2], [2, 3], [3, 0]])
 
     star_map.write_texture(resolution, path)
 
