@@ -138,28 +138,51 @@ def match_1(star_map, vertices, edges):
     vertices = np.array(vertices)
     edges = np.array(edges)
 
-    for vertex_index, vertex in enumerate(vertices):
-        normalized_vertices = vertices - vertex
+    for star_index, star_position in enumerate(star_map.angular_positions):
+        for next_star in star_map.angular_positions[star_index + 1:]:
+            star_difference = next_star - star_position
+            distance_between_stars = np.linalg.norm(star_difference)
 
-        for edge in edges:
-            if edge[0] == vertex_index:
-                next_vertex = normalized_vertices[edge[1]]
-            elif edge[1] == vertex_index:
-                next_vertex = normalized_vertices[edge[0]]
-            else:
-                continue
+            angle_between_stars = np.arctan2(
+                star_difference[1],
+                star_difference[0],
+            )
 
-            distance_between_vertices = np.linalg.norm(next_vertex - vertex)
-            for star_index, star in enumerate(star_map.angular_positions):
-                for next_star in star_map.angular_positions[star_index + 1:]:
-                    distance_between_stars = np.linalg.norm(next_star - star)
+            for vertex_index, vertex in enumerate(vertices):
+                normalized_vertices = vertices - vertex
+
+                for edge in edges:
+                    if edge[0] == vertex_index:
+                        next_vertex = normalized_vertices[edge[1]]
+                    elif edge[1] == vertex_index:
+                        next_vertex = normalized_vertices[edge[0]]
+                    else:
+                        continue
+
+                    vertex_difference = next_vertex - vertex
+                    distance_between_vertices = np.linalg.norm(vertex_difference)
 
                     scaled_vertices = (
                         distance_between_stars
-                        * vertices
+                        * normalized_vertices
                         / distance_between_vertices
                     )
-                    
+
+                    angle_between_vertices = np.arctan2(
+                        vertex_difference[1],
+                        vertex_difference[0],
+                    )
+
+                    differential_angle = angle_between_stars - angle_between_vertices
+
+                    cos_, sin_ = np.cos(differential_angle), np.sin(differential_angle)
+                    rotation_matrix = np.array([[cos_, -sin_], [sin_, cos_]])
+
+                    rotated_verts = np.array([
+                        np.matmul(R, vertex) for vertex in scaled_vertices
+                    ])
+
+                    projected_constellation = rotated_verts + star_position
 
 
 
