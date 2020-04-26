@@ -70,11 +70,15 @@ class StarMap:
         """
         """
         indices = []
-        for index_0, position_0 in enumerate(self._angular_positions):
-            for index_1, position_1 in enumerate(self._angular_positions[index_0 + 1:]):
-                angular_distance = self._distance_between_angular_positions(position_0, position_1)
-                if angular_distance < angle:
-                    indices.append((index_0, index_1))
+        for index, position in enumerate(self._angular_positions):
+            if index == star_index:
+                continue
+            angular_distance = self._distance_between_angular_positions(
+                position,
+                self._angular_positions[star_index],
+            )
+            if angular_distance < angle:
+                indices.append(index)
 
         return indices
 
