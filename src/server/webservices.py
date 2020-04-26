@@ -72,7 +72,7 @@ class StarMap:
         indices = []
         for index_0, position_0 in enumerate(self._angular_positions):
             for index_1, position_1 in enumerate(self._angular_positions[index_0 + 1:]):
-                angular_distance = np.arccos(np.dot(position_0, position_1))
+                angular_distance = self._distance_between_angular_positions(position_0, position_1)
                 if angular_distance < angle:
                     indices.append((index_0, index_1))
 
@@ -82,12 +82,10 @@ class StarMap:
         difference = self._angular_positions[index_1] - self._angular_positions[index_0]
         return np.arctan2(difference[1], difference[0])
 
-    def get_distance_between_stars(self, star_index_0, star_index_1):
+    @staticmethod
+    def _distance_between_angular_positions(position_0, position_1):
         """
         """
-        position_0 = self._angular_positions[star_index_0]
-        position_1 = self._angular_positions[star_index_1]
-
         delta_lambda = position_1[0] - position_0[0]
 
         return np.arccos(
@@ -98,11 +96,20 @@ class StarMap:
             * np.cos(delta_lambda)
         )
 
+    def get_distance_between_stars(self, star_index_0, star_index_1):
+        """
+        """
+        position_0 = self._angular_positions[star_index_0]
+        position_1 = self._angular_positions[star_index_1]
+
+        return self._distance_between_angular_positions(position_0, position_1)
+
     def get_distance_to_nearest_star(self, angular_position):
         """
         """
         distances = [
-            np.arccos(np.dot(position, angular_position)) for position in self._angular_positions
+            self._distance_between_angular_positions(position, angular_position)
+            for position in self._angular_positions
         ]
         return np.argmin(distances), np.min(distances)
 
