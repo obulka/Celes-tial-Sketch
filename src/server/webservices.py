@@ -4,6 +4,8 @@ import json
 from flask import Flask, request
 import numpy as np
 import cv2
+# from mpl_toolkits import Basemap
+# import matplotlib.pyplot as plt
 
 from .fit_constellation import match, drawing_edges_to_star_edges
 
@@ -36,10 +38,16 @@ class StarMap:
         image_positions = image_positions.astype(int)
 
         for position in image_positions:
-            cv2.circle(
+            cv2.ellipse(
                 texture,
                 tuple(position),
-                self._stellar_radii,
+                (
+                    self._stellar_radii,
+                    self._stellar_radii,
+                ),
+                0,
+                0,
+                360,
                 self._star_colour,
                 -1,
             )
@@ -55,19 +63,17 @@ class StarMap:
                 self._stellar_radii,
             )
 
-        # distorted = np.empty_like(texture)
-        # new_indices = np.round(resolution[1] * (
-        #     np.tan(np.linspace(0, 2 * np.pi, resolution[1]) / 2)**-1
-        #     + 1
-        # ) / 2).astype(int)
-        # print(new_indices)
-
-        # for row_index, row in enumerate(texture):
-        #     for column_index, pixel in enumerate(row):
-        #         new_index = new_indices[column_index]
-        #         distorted[row_index, new_index] = pixel
-
         cv2.imwrite(path, texture)
+        # map = Basemap(projection='cyl', lat_0=0, lon_0=0)
+
+        # map.drawmapboundary(fill_color='black')
+
+        # for lon in range(0, 360, 20):
+        #     for lat in range(-60, 90, 30):
+        #         map.tissot(lon, lat, 4, 50)
+
+        # plt.show()
+
 
     @property
     def angular_positions(self):
@@ -85,12 +91,13 @@ class StarMap:
         """
         """
         indices = []
+        star_position = self._angular_positions[star_index]
         for index, position in enumerate(self._angular_positions):
             if index == star_index:
                 continue
             angular_distance = self._distance_between_angular_positions(
                 position,
-                self._angular_positions[star_index],
+                star_position,
             )
             if angular_distance > min_angle and angular_distance < max_angle:
                 indices.append(index)
@@ -105,16 +112,10 @@ class StarMap:
     def _distance_between_angular_positions(position_0, position_1):
         """
         """
-        delta_lambda = position_1[0] - position_0[0]
-        delta_lambda = (delta_lambda + np.pi) % 2 * np.pi - np.pi
+        delta_theta = position_1[0] - position_0[0]
+        delta_phi = position_1[1] - position_0[1]
 
-        return np.arccos(
-            np.sin(position_0[1])
-            * np.sin(position_1[1])
-            + np.cos(position_0[1])
-            * np.cos(position_1[1])
-            * np.cos(delta_lambda)
-        )
+        return np.sqrt(delta_theta**2 + delta_phi**2)
 
     def get_distance_between_stars(self, star_index_0, star_index_1):
         """
@@ -147,7 +148,9 @@ def create_star_map(request_data):
     star_map = StarMap(num_stars)
 
     if edges and vertices:
-        star_map.add_edges(drawing_edges_to_star_edges(edges, match(star_map, vertices, edges)))
+        star_map.add_edges(
+            drawing_edges_to_star_edges(edges, match(star_map, vertices, edges))
+        )
 
     star_map.write_texture(resolution, path)
 

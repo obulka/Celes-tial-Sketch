@@ -80,6 +80,28 @@ def match(starmap, verts, edges):
     return best_match
 
 
+def match_1(star_map, vertices, edges):
+    vertices = np.array(vertices)
+    edges = np.array(edges)
+
+    for vertex_index, vertex in enumerate(vertices):
+        normalized_vertices = vertices - vertex
+
+        for edge in edges:
+            if edge[0] == vertex_index:
+                next_vertex = normalized_vertices[edge[1]]
+            elif edge[1] == vertex_index:
+                next_vertex = normalized_vertices[edge[0]]
+            else:
+                continue
+
+            for star_index, star in enumerate(star_map.angular_positions):
+                for next_star in star_map.angular_positions[star_index + 1:]:
+                    pass
+
+
+
+
 def drawing_edges_to_star_edges(edges, star_match):
     star_edges = []
     for edge in edges:
