@@ -24,7 +24,7 @@ def get_edge_length(verts, edge):
     return edge_length
 
 
-def match(starmap,verts,edges):
+def match(starmap, verts, edges):
     longest_edge = find_longest_edge(verts,edges)
     fixed_vert = verts[edges[longest_edge][0]]
 
