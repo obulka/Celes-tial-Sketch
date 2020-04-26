@@ -1,8 +1,11 @@
 import math
 import numpy as np
 
+'''
+Returns the longest 
 
-def find_longest_edge(verts, edges):
+'''
+def find_longest_edge(verts,edges):
     max_edge_length = 0
     longest_edge = 0
     for index,edge in enumerate(edges):
@@ -21,12 +24,12 @@ def get_edge_length(verts, edge):
     return edge_length
 
 
-def match(starmap, verts, edges):
-    longest_edge = find_longest_edge(verts, edges)
-    fixed_vert = verts[longest_edge[0]]
+def match(starmap,verts,edges):
+    longest_edge = find_longest_edge(verts,edges)
+    fixed_vert = verts[edges[longest_edge][0]]
 
     #The relative positions of each
-    relative_array = np.array(verts) - np.array(verts[fixed_vert])
+    relative_array = np.array(verts) - np.array(fixed_vert)
 
     lowest_weight = np.Inf
     best_match = []
