@@ -83,9 +83,9 @@ def match(starmap, verts, edges, max_matches=7):
                 lowest_weight = weight
                 best_match = match
                 matches += 1
+                print("Updated best match")
                 if matches >= max_matches:
                     return best_match
-                # print(best_match)
     return best_match
 
 
